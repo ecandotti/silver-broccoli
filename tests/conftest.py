@@ -1,35 +1,33 @@
 import requests
 
-Post = requests.post('http://127.0.0.1:5000/movies',
+Post = requests.post('http://127.0.0.1:5000/insert',
     json = {
-        'genre': 'Adventure',
+        'url': 'http://youtube.com/',
         'title': 'Wonder Woman',
-        'year': 2022
         }).status_code
 if Post == 201:
-    print(Post, "Le test est ok")
+    print(Post, "Post OK ✅")
 else:
-    print(Post, "Le test est ko")
+    print(Post, "Post KO ❌")
 
-Get = requests.get('http://127.0.0.1:5000/movies/1').status_code
+Get = requests.get('http://127.0.0.1:5000').status_code
 if Get == 200:
-    print(Get, "Le test est ok")
+    print(Get, "Get OK ✅")
 else:
-    print(Get, "Le test est ko")
+    print(Get, "Get KO ❌")
 
-Put = requests.put('http://127.0.0.1:5000/movies/3', 
+Put = requests.put('http://127.0.0.1:5000/update/3', 
     json = {
-        'genre': 'Adventure',
+        'url': 'http://facebook.com/',
         'title': 'Wonder Woman',
-        'year': 2030
         }).status_code
 if Put == 200:
-    print(Put, "Le test est ok")
+    print(Put, "Put OK ✅")
 else:
-    print(Put, "Le test est ko")
+    print(Put, "Put KO ❌")
 
-Delete = requests.delete('http://127.0.0.1:5000/movies/1').status_code
+Delete = requests.delete('http://127.0.0.1:5000/delete/1').status_code
 if Delete == 200:
-    print(Delete, "Le test est ok")
+    print(Delete, "Delete OK ✅")
 else:
-    print(Delete, "Le test est ko")
+    print(Delete, "Delete KO ❌")
