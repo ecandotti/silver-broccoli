@@ -1,5 +1,11 @@
 import requests
 
+Get = requests.get('http://127.0.0.1:5000').status_code
+if Get == 200:
+    print(Get, "Get OK ✅")
+else:
+    print(Get, "Get KO ❌")
+
 Post = requests.post('http://127.0.0.1:5000/insert',
     json = {
         'url': 'http://youtube.com/',
@@ -10,14 +16,9 @@ if Post == 201:
 else:
     print(Post, "Post KO ❌")
 
-Get = requests.get('http://127.0.0.1:5000').status_code
-if Get == 200:
-    print(Get, "Get OK ✅")
-else:
-    print(Get, "Get KO ❌")
-
-Put = requests.put('http://127.0.0.1:5000/update/3', 
+Put = requests.put('http://127.0.0.1:5000/update', 
     json = {
+        'id': 1,
         'url': 'http://facebook.com/',
         'title': 'Wonder Woman',
         }).status_code
@@ -26,7 +27,7 @@ if Put == 200:
 else:
     print(Put, "Put KO ❌")
 
-Delete = requests.delete('http://127.0.0.1:5000/delete/1').status_code
+Delete = requests.delete('http://127.0.0.1:5000/delete/1/').status_code
 if Delete == 200:
     print(Delete, "Delete OK ✅")
 else:

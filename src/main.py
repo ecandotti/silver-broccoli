@@ -1,44 +1,74 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-import json
+from flask import Blueprint, render_template, redirect, url_for, request, flash, Response
 from . import db
 from .models import Video
 
 main = Blueprint('main', __name__)
 
-@main.route('/', methods = ['GET'])
+@main.route('/')
 def movie():
-    allData = Video.query.all()
- 
-    return render_template("movies.html", movies = allData)
+    allMovies = Video.query.all()
+    return render_template("movies.html", movies = allMovies)
 
 
 @main.route('/insert', methods = ['POST'])
 def insert():
-    myData = json.loads(request.data)
-    db.session.add(myData)
-    db.session.commit()
+    data = request.get_json()
 
-    flash("Movie Inserted Successfully")
+    if not data:
+        link = request.form['url']
+        title = request.form['title']
 
-    return redirect(url_for('main.movie'))
- 
- 
-@main.route('/update/<id>/', methods = ['PUT'])
-def update(id):
-    myData = Video.query.get(id)
+        newVideo = Video(url = link, title = title)
+        db.session.add(newVideo)
+        db.session.commit()
 
-    db.session.commit()
-    flash("Movie Updated Successfully")
+        flash("Movie Inserted Successfully")
 
-    return redirect(url_for('main.movie'))
- 
- 
+        return redirect(url_for('main.movie'))
+    elif data:
+        link = data['url']
+        title = data['title']
 
-@main.route('/delete/<id>/', methods = ['DELETE'])
+        newVideo = Video(url = link, title = title)
+        db.session.add(newVideo)
+        db.session.commit()
+        return Response("Movie added", 201, mimetype = 'application/json')
+
+
+@main.route('/update', methods = ['POST', 'PUT'])
+def update():
+    if request.method == 'POST':
+        updatedVideo = Video.query.get(request.form.get('id'))
+
+        updatedVideo.url = request.form['url']
+        updatedVideo.title = request.form['title']
+
+        db.session.commit()
+        flash("Movie Updated Successfully")
+
+        return redirect(url_for('main.movie'))
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+
+        updatedVideo = Video.query.get(data['id'])
+
+        updatedVideo.url = data['url']
+        updatedVideo.title = data['title']
+        db.session.commit()
+
+        return Response("Movie Updated", status = 200)
+
+
+@main.route('/delete/<int:id>/', methods = ['GET', 'DELETE'])
 def delete(id):
-    myData = Video.query.get(id)
-    db.session.delete(myData)
+    videoId = Video.query.get(id)
+    db.session.delete(videoId)
     db.session.commit()
-    flash("Movie Deleted Successfully")
- 
-    return redirect(url_for('main.movie'))
+
+    if request.method == 'GET':
+        flash("Movie Deleted Successfully")
+        return redirect(url_for('main.movie'))
+    else:
+        response = Response("Movie Deleted", status = 200)
+        return response
