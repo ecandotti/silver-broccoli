@@ -11,7 +11,7 @@
 git clone https://github.com/ecandotti/silver-broccoli.git  
 cd silver-broccoli  
 pip3 install requirements.txt  
-flask run start
+flask run
 ~~~
 
 ## 🧪 How to tests the project :  
