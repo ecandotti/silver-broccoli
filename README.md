@@ -10,7 +10,7 @@
 ~~~bash
 git clone https://github.com/ecandotti/silver-broccoli.git  
 cd silver-broccoli  
-pip3 install requirements.txt  
+pip install -r requirements.txt  
 flask run
 ~~~
 
